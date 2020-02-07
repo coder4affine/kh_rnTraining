@@ -1,4 +1,4 @@
-import React, {useState, useRef} from 'react';
+import React, {useState, useRef, useContext} from 'react';
 import {
   Text,
   SafeAreaView,
@@ -7,11 +7,14 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
+import {Formik} from 'formik';
 import TextInput from '../../components/TextInput/TextInput';
 import Button from '../../components/Button/Button';
+import {ThemeContext} from '../../context/themeContext';
 
 const Login = () => {
   const passwordRef = useRef();
+  const {theme, setTheme} = useContext(ThemeContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -37,40 +40,51 @@ const Login = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={{flex: 1}} behavior="padding" enabled>
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={{flex: 1, justifyContent: 'flex-end'}}>
-          <Text style={{textAlign: 'center'}}>Login</Text>
-          {/* <TextInput style={{borderColor: 'red'}} /> */}
-          {/* <TextInput style={{borderRadius: 10}} /> */}
-          {/* <TextInput disable={true} /> */}
-          <TextInput
-            placeholder="Username"
-            value={username}
-            onChangeText={onChangeUsername}
-            returnKeyType="next"
-            onSubmitEditing={() => {
-              passwordRef.current.focus();
-            }}
-          />
-          <TextInput
-            passRef={passwordRef}
-            placeholder="Password"
-            secureTextEntry={true}
-            returnKeyType="done"
-            value={password}
-            onChangeText={onChangePassword}
-            onSubmitEditing={onLogin}
-          />
-          <Button title="Login" onPress={onLogin} />
-          <Button
-            title="Register"
-            textStyle={{color: 'red'}}
-            buttonStyle={{
-              backgroundColor: 'yellow',
-            }}
-          />
-          {/* <TouchableHighlight
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView style={{flex: 1}} behavior="padding" enabled>
+        {/* <Consumer>{value => <Text>{value.theme}</Text>}</Consumer> */}
+        <Text>{theme}</Text>
+        <Button
+          title="Register"
+          textStyle={{color: 'red'}}
+          buttonStyle={{
+            backgroundColor: 'yellow',
+          }}
+          onPress={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+        />
+        <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+          <View style={{flex: 1, justifyContent: 'flex-end'}}>
+            <Text style={{textAlign: 'center'}}>Login</Text>
+            {/* <TextInput style={{borderColor: 'red'}} /> */}
+            {/* <TextInput style={{borderRadius: 10}} /> */}
+            {/* <TextInput disable={true} /> */}
+            <TextInput
+              placeholder="Username"
+              value={username}
+              onChangeText={onChangeUsername}
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                passwordRef.current.focus();
+              }}
+            />
+            <TextInput
+              passRef={passwordRef}
+              placeholder="Password"
+              secureTextEntry={true}
+              returnKeyType="done"
+              value={password}
+              onChangeText={onChangePassword}
+              onSubmitEditing={onLogin}
+            />
+            <Button title="Login" onPress={onLogin} />
+            <Button
+              title="Register"
+              textStyle={{color: 'red'}}
+              buttonStyle={{
+                backgroundColor: 'yellow',
+              }}
+            />
+            {/* <TouchableHighlight
         onPress={() => {}}
         style={{
           margin: 10,
@@ -119,9 +133,10 @@ const Login = () => {
           <Text style={{color: '#fff'}}>Login</Text>
         </View>
       </TouchableWithoutFeedback> */}
-        </View>
-      </TouchableWithoutFeedback>
-    </KeyboardAvoidingView>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
