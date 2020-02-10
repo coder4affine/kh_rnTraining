@@ -10,11 +10,11 @@ import {
 import {Formik} from 'formik';
 import TextInput from '../../components/TextInput/TextInput';
 import Button from '../../components/Button/Button';
-import {ThemeContext} from '../../context/themeContext';
+// import {ThemeContext} from '../../context/themeContext';
 
-const Login = () => {
+const Login = ({navigation}) => {
   const passwordRef = useRef();
-  const {theme, setTheme} = useContext(ThemeContext);
+  // const {theme, setTheme} = useContext(ThemeContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -43,15 +43,15 @@ const Login = () => {
     <SafeAreaView style={{flex: 1}}>
       <KeyboardAvoidingView style={{flex: 1}} behavior="padding" enabled>
         {/* <Consumer>{value => <Text>{value.theme}</Text>}</Consumer> */}
-        <Text>{theme}</Text>
-        <Button
+        {/* <Text>{theme}</Text> */}
+        {/* <Button
           title="Register"
           textStyle={{color: 'red'}}
           buttonStyle={{
             backgroundColor: 'yellow',
           }}
           onPress={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-        />
+        /> */}
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <View style={{flex: 1, justifyContent: 'flex-end'}}>
             <Text style={{textAlign: 'center'}}>Login</Text>
@@ -82,6 +82,9 @@ const Login = () => {
               textStyle={{color: 'red'}}
               buttonStyle={{
                 backgroundColor: 'yellow',
+              }}
+              onPress={() => {
+                navigation.navigate('Register');
               }}
             />
             {/* <TouchableHighlight

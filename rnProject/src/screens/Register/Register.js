@@ -102,12 +102,12 @@ const loginFields = [
   },
 ];
 
-const Register = () => {
+const Register = ({navigation}) => {
   return (
     <SafeAreaView>
       <Form
         fields={registerFields}
-        onSubmit={val => console.warn(val)}
+        onSubmit={val => navigation.replace('Settings')}
         buttonTitle="Register"
       />
       {/* <Form
