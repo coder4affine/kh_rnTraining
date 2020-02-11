@@ -3,6 +3,7 @@ import {TouchableOpacity} from 'react-native';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
 import {createDrawerNavigator} from 'react-navigation-drawer';
+import {TransitionPresets} from 'react-navigation-stack';
 
 import Login from './src/screens/Login/Login';
 import Register from './src/screens/Register/Register';
@@ -21,6 +22,7 @@ import HomeIcon from './src/assets/icons/home.svg';
 import PersonIcon from './src/assets/icons/person.svg';
 import SettingsIcon from './src/assets/icons/settings.svg';
 import MenuIcon from './src/assets/icons/menu.svg';
+import Modal from './src/screens/Modal/Modal';
 
 const TopNavigator = createMaterialTopTabNavigator({
   Settings: Settings,
@@ -35,34 +37,58 @@ const drawerNavigationOptions = ({navigation}) => {
         <TouchableOpacity
           style={{paddingRight: 10}}
           onPress={() => navigation.toggleDrawer()}>
-          <MenuIcon height={30} width={30} />
+          <MenuIcon height={30} width={30} fill="#fff" />
         </TouchableOpacity>
       );
     },
   };
 };
 
-const HomeStack = createStackNavigator({
-  Home: {
-    screen: Home,
-    navigationOptions: drawerNavigationOptions,
-  },
-  Temp: Temp,
-});
+const defaultOptions = () => {
+  return {
+    headerStyle: {
+      backgroundColor: 'red',
+    },
+    headerTintColor: '#fff',
+  };
+};
 
-const UsersStack = createStackNavigator({
-  Users: {
-    screen: Users,
-    navigationOptions: drawerNavigationOptions,
+const HomeStack = createStackNavigator(
+  {
+    Home: {
+      screen: Home,
+      navigationOptions: drawerNavigationOptions,
+    },
+    Temp: Temp,
   },
-});
+  {
+    defaultNavigationOptions: defaultOptions,
+  },
+);
 
-const SettingsStack = createStackNavigator({
-  Settings: {
-    screen: TopNavigator,
-    navigationOptions: drawerNavigationOptions,
+const UsersStack = createStackNavigator(
+  {
+    Users: {
+      screen: Users,
+      navigationOptions: drawerNavigationOptions,
+    },
   },
-});
+  {
+    defaultNavigationOptions: defaultOptions,
+  },
+);
+
+const SettingsStack = createStackNavigator(
+  {
+    Settings: {
+      screen: TopNavigator,
+      navigationOptions: drawerNavigationOptions,
+    },
+  },
+  {
+    defaultNavigationOptions: defaultOptions,
+  },
+);
 
 const AppTabNav = createBottomTabNavigator(
   {
@@ -108,10 +134,26 @@ const DrawerNavigator = createDrawerNavigator(
   },
 );
 
+const ModalStack = createStackNavigator(
+  {
+    Home: DrawerNavigator,
+    Modal: Modal,
+  },
+  {
+    mode: 'modal',
+    headerMode: 'none',
+    defaultNavigationOptions: {
+      gestureEnabled: true,
+      cardOverlayEnabled: true,
+      ...TransitionPresets.SlideFromRightIOS,
+    },
+  },
+);
+
 const AppNavigation = createSwitchNavigator({
   Splash: SplashScreen,
   Auth: Auth,
-  App: DrawerNavigator,
+  App: ModalStack,
 });
 
 export default createAppContainer(AppNavigation);

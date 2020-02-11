@@ -1,12 +1,13 @@
 import React from 'react';
-import {View, Text, Button} from 'react-native';
+import {Text, Button, ScrollView} from 'react-native';
 
 const Home = ({navigation}) => {
   return (
-    <View>
+    <ScrollView>
       <Text>Home Page</Text>
       <Button title="Go to Temp" onPress={() => navigation.navigate('Temp')} />
-    </View>
+      <Button title="Open Modal" onPress={() => navigation.navigate('Modal')} />
+    </ScrollView>
   );
 };
 
