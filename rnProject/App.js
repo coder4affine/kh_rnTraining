@@ -1,28 +1,67 @@
 import React from 'react';
-
+import {TouchableOpacity} from 'react-native';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {createStackNavigator} from 'react-navigation-stack';
+import {createDrawerNavigator} from 'react-navigation-drawer';
+
 import Login from './src/screens/Login/Login';
 import Register from './src/screens/Register/Register';
 import Settings from './src/screens/Settings/Settings';
 import Home from './src/screens/Home/Home';
 import Users from './src/screens/Users/Users';
+import Temp from './src/screens/Temp/Temp';
+import Temp1 from './src/screens/Temp1/Temp1';
+import CustomDrawer from './src/components/CustomDrawer/CustomDrawer';
 import SplashScreen from './src/screens/SplashScreen/SplashScreen';
-import {createBottomTabNavigator} from 'react-navigation-tabs';
+import {
+  createBottomTabNavigator,
+  createMaterialTopTabNavigator,
+} from 'react-navigation-tabs';
 import HomeIcon from './src/assets/icons/home.svg';
 import PersonIcon from './src/assets/icons/person.svg';
 import SettingsIcon from './src/assets/icons/settings.svg';
+import MenuIcon from './src/assets/icons/menu.svg';
+
+const TopNavigator = createMaterialTopTabNavigator({
+  Settings: Settings,
+  Temp: Temp,
+  TempOne: Temp1,
+});
+
+const drawerNavigationOptions = ({navigation}) => {
+  return {
+    headerRight: () => {
+      return (
+        <TouchableOpacity
+          style={{paddingRight: 10}}
+          onPress={() => navigation.toggleDrawer()}>
+          <MenuIcon height={30} width={30} />
+        </TouchableOpacity>
+      );
+    },
+  };
+};
 
 const HomeStack = createStackNavigator({
-  Home: Home,
+  Home: {
+    screen: Home,
+    navigationOptions: drawerNavigationOptions,
+  },
+  Temp: Temp,
 });
 
 const UsersStack = createStackNavigator({
-  Users: Users,
+  Users: {
+    screen: Users,
+    navigationOptions: drawerNavigationOptions,
+  },
 });
 
 const SettingsStack = createStackNavigator({
-  Settings: Settings,
+  Settings: {
+    screen: TopNavigator,
+    navigationOptions: drawerNavigationOptions,
+  },
 });
 
 const AppTabNav = createBottomTabNavigator(
@@ -59,15 +98,20 @@ const Auth = createStackNavigator(
   {},
 );
 
-const App = createStackNavigator({
-  Home: Home,
-  Settings: Settings,
-});
+const DrawerNavigator = createDrawerNavigator(
+  {
+    Home: AppTabNav,
+  },
+  {
+    contentComponent: CustomDrawer,
+    drawerPosition: 'right',
+  },
+);
 
 const AppNavigation = createSwitchNavigator({
   Splash: SplashScreen,
   Auth: Auth,
-  App: AppTabNav,
+  App: DrawerNavigator,
 });
 
 export default createAppContainer(AppNavigation);
