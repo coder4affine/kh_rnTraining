@@ -25,20 +25,20 @@ import countryList from '../../utils/countryList';
 // }, []);
 
 const Users = () => {
-  return <SectionList sections={countryList} />;
-  // return (
-  //   <FlatList
-  //     data={countryList}
-  //     renderItem={({item, index, separators}) => {
-  //       return (
-  //         <View style={{padding: 10}}>
-  //           <Text>{item}</Text>
-  //         </View>
-  //       );
-  //     }}
-  //     keyExtractor={item => `${item}`}
-  //   />
-  // );
+  // return <SectionList sections={countryList} />;
+  return (
+    <FlatList
+      data={countryList}
+      renderItem={({item, index, separators}) => {
+        return (
+          <View style={{padding: 10}}>
+            <Text>{item}</Text>
+          </View>
+        );
+      }}
+      keyExtractor={item => `${item}`}
+    />
+  );
   // return (
   //   <ScrollView>
   //     {countryList.map(x => (
